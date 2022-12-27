@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="css/mainStyle.css">
+    <link rel="stylesheet" href="css/registerStyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200&family=Noto+Sans+TC:wght@200&family=Big+Shoulders+Display&family=Cormorant+Garamond&family=Roboto+Slab:wght@200;300&family=Righteous&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>會員註冊</title>
+</head>
+<body>
+    <center>
+        <div class='wave_bg'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+            <div class='title'>No Waste
+                <div class="slogan">
+                    Cut waste. Cut emissions. Fight climate change. Our planet is drowning in waste.
+                </div></div>
+        </div>
+        <div class="bar" id="back">
+            <ul>
+                <li><a href="index.html">廢食一覽</a></li>
+                <li><a href="register.html">會員註冊</a></li>
+                <li><a href="upload.html">上傳廢食</a></li>
+                <li><a href="cart.html">購物車</a></li>
+            </ul>
+        </div>
+        <table cellspacing="0">
+            <tr>
+                <td id="admin_func">
+                    <a href="membership.html">會員清單</a>
+                    <a href="accept.html">廢食審核</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign">Sign Up</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="content sign up">
+                    <center>
+                    <div class="conta">
+                        <!-- onsubmit="alert('已送出');return false;"-->
+                        <form onsubmit="alert('已送出');return false;" accept-charset="utf-8" autocomplete="off" >
+                            <font id="subtitle">會員註冊</font><br>
+                            <label for="name">姓名：</label><br>
+                            <input type="text" name="name" id="name" pattern=".{1,30}"
+                            placeholder="上限30個字元" required />
+                            <span class="validity"></span><br>
+                            
+                            <label for="phone">手機：</label><br>
+                            <input type="tel" name="phone" id="phone" pattern="09\d{8}" 
+                            placeholder="09開頭共10位數的手機格式" inputmode="numeric" required />
+                            <span class="validity"></span><br>
+                            
+                            <label for="password">密碼：</label><br>
+                            <div id="warning">
+                            限制英文字母、數字與特殊符號<br>
+                            長度至少大於8<br>
+                            至少有一個數字和一個英文字母<br>				
+                            </div>
+                            <input type="password" name="password" id="password" required
+                            pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" />
+                            <span class="validity"></span><br>
+                            
+                            <label for="address">地址：</label><br>
+                            <input type="text" name="address" id="address" required />
+                            <span class="validity"></span><br>
+
+                            <label for="">是否要成為賣家：</label>
+                            <input type="radio" name="seller" value="yes" required />是
+                            <input type="radio" name="seller" value="no" required />否
+                            <span class="check"></span><br><br>
+                            <input type="submit" value="提交" /><br>
+                        </form>
+                    </div>
+                    </center>
+                </td>
+            </tr>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="special">
+                        <div>
+                            <a href="#back">Go Back</a>
+                        </div>
+                        
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </center>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // 處理表單點擊事件
+            var $form = $('#submit');
+            $form.click(function() {
+                submit();
+            });
+
+            function submit() {
+                var name = $('#name').val();
+                var phone = $('#phone').val();
+                var password = $('#password').val();
+
+                var phone_rule = /^(09)[0-9]{8}$/;
+                var password_rule = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+                if(!phone_rule.test(phone)) {
+                    alert("手機格式不符，需09開頭共10位數的手機格式！");
+                }
+                else if(!password_rule.test(password)) {
+                    alert("密碼格式不符，長度至少8，且至少包含一個數字和英文字母！");
+                }
+                else {
+                    // 將資料組成JSON格式
+                    var data_object = {
+                        "name": name,
+                        "phone": phone,
+                        "password": password
+                    };
+
+                    // 將JSON格式轉換成字串
+                    var data_string = JSON.stringify(data_object);
+
+                    // 發出POST的AJAX請求
+                    $.ajax({
+                            type: "POST",
+                            url: "api/member.do",
+                            data: data_string,
+                            crossDomain: true,
+                            cache: false,
+                            dataType: 'json',
+                            timeout: 5000,
+                            success: function (response) {
+                                $('#flashMessage').html(response.message);
+                                $('#flashMessage').show();
+                                if(response.status == 200){
+                                    updateSQLTable(response.response);
+                                }
+                            },
+                            error: function () {
+                                alert("無法連線到伺服器！");
+                            }
+                    });
+                }
+            }
+
+            function updateSQLTable(data) {
+                $("#sql_log > tbody").empty();
+                var time = (data.time / 1000000).toFixed(2);
+                var table_html = "";
+
+                table_html += '<tr>';
+                table_html += '<td>' + '1' + '</td>';
+                table_html += '<td>' + data.sql + '</td>';
+                table_html += '<td style="text-align: right">' + '0' + '</td>';
+                table_html += '<td style="text-align: right">' + data.row + '</td>';
+                table_html += '<td style="text-align: right">' + data.row + '</td>';
+                table_html += '<td style="text-align: right">' + time + '</td>';
+                table_html += '</tr>';
+                $("#sql_log > tbody").append(table_html);
+                $("#sql_summary").html("(default) " + data.row + " queries took " + time + " ms");
+            }
+        });
+    </script>
+</body>
+</html>

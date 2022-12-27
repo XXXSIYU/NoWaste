@@ -1,0 +1,121 @@
+:root {
+    --dark-purple: rgb(53, 37, 80);
+    --outline: 1px solid rgba(255,255,255,0.5);
+    --content-ch-font-family: Noto Sans TC, 微軟正黑體;
+    --content-eng-font-family: 'Quicksand',Noto Sans TC;
+}
+
+form {
+    display: inline-block;
+    text-align: left;
+    font-family: var(--content-ch-font-family);
+    font-weight: 200;
+    position: relative;
+}
+
+#subtitle {
+    font-size: 36px;
+    color: transparent;
+    background: none;
+    font-family: var(--content-ch-font-family);
+    font-weight: 900 !important;
+    filter: drop-shadow(1px 1px 1px #333);
+    text-shadow: none;
+}
+ 
+input, textarea#description {
+    margin-bottom: 36px;
+    font-family: var(--content-eng-font-family);
+    font-weight: 200;
+    letter-spacing: 1px;
+}
+ 
+input:not(input[type="radio"]), textarea#description {
+    background: var(--dark-purple);
+    border:none;
+    padding: 5px 10px;
+    color: #FFF;
+    outline: var(--outline);
+    outline-offset: -3px;
+    font-size: 24px;
+}
+ 
+input[type="submit"] {
+    padding: 6px 18px !important;
+    font-size: 18px !important;
+    cursor: pointer;
+    font-weight: 200;
+}
+ 
+#warning {
+    font-size: 14px;
+    color: rgb(255, 153, 167);
+    line-height: 18px;
+    font-family: var(--content-ch-font-family);
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 3px 0px;
+}
+ 
+::placeholder {
+    color: #FFF6;
+    font-size: 72%;
+    font-weight: 200;
+}
+ 
+:required+span.validity:after {
+    position: relative;
+    content: '*必填';
+    bottom: 6px;
+    font-size: 12px;
+    padding-left: 3px;
+    font-family: var(--content-ch-font-family);
+}
+ 
+:required+span.check:after {
+    position: relative;
+    content: '✖';
+    font-size: 18px;
+    padding-left: 6px;
+    color: #cf0000;
+}
+ 
+:required:valid+span:after {
+    position: relative;
+    content: '✓';
+    bottom: 0px;
+    font-size: 18px;
+    padding-left: 6px;
+    color: lawngreen;
+}
+
+label {
+    letter-spacing: 1px;
+}
+
+
+
+/*  Upload Page  */
+
+input:is(#fileImage) {
+    font-size: 80%;
+    padding: 8px 10px;
+}
+
+textarea:required+span.validity:after {
+    position: relative;
+    content: '*必填';
+    bottom: 42px;
+    font-size: 12px;
+    padding-left: 3px;
+    font-family: var(--content-ch-font-family);
+}
+ 
+textarea:required:valid+span:after {
+    position: relative;
+    content: '✓';
+    bottom: 42px;
+    font-size: 18px;
+    padding-left: 7px;
+    color: lawngreen;
+}

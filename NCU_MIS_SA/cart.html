@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="css/mainStyle.css">
+    <link rel="stylesheet" href="css/acceptStyle.css">
+    <link rel="stylesheet" href="css/registerStyle.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200&family=Noto+Sans+TC:wght@200&family=Big+Shoulders+Display&family=Cormorant+Garamond&family=Roboto+Slab:wght@200;300&family=Righteous&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>檢視購物車</title>
+</head>
+<body>
+    <center>
+        <div class='wave_bg'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+            <div class='title'>No Waste
+                <div class="slogan">
+                    Cut waste. Cut emissions. Fight climate change. Our planet is drowning in waste.
+                </div></div>
+        </div>
+        <div class="bar" id="back">
+            <ul>
+                <li><a href="index.html">廢食一覽</a></li>
+                <li><a href="register.html">會員註冊</a></li>
+                <li><a href="upload.html">上傳廢食</a></li>
+                <li><a href="cart.html">購物車</a></li>
+            </ul>
+        </div>
+        <table cellspacing="0">
+            <tr>
+                <td id="admin_func">
+                    <a href="membership.html">會員清單</a>
+                    <a href="accept.html">廢食審核</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Confirm">Cart Information</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="content">
+                     <center>
+                         <div class="temp post">
+                            <div class="cart subtitle">您的資訊</div>
+                            <div class="conta">
+                                <!-- onsubmit="alert('已送出');return false;"-->
+                                <form onsubmit="alert('已送出');return false;" accept-charset="utf-8" autocomplete="off" >
+                                    
+                                    <label for="name">姓名：</label><br>
+                                    <input type="text" name="name" id="name" pattern=".{1,30}"
+                                    placeholder="上限30個字元" required oninput="displayNow()" />
+                                    <span class="validity"></span><br>
+                                    
+                                    <label for="phone">手機：</label><br>
+                                    <input type="tel" name="phone" id="phone" pattern="09\d{8}" 
+                                    placeholder="09開頭共10位數的手機格式" inputmode="numeric" required 
+                                    oninput="displayNow()"/>
+                                    <span class="validity"></span><br>
+                                    
+                                    <label for="address">地址：</label><br>
+                                    <input type="text" name="address" id="address" required 
+                                    oninput="displayNow()"/>
+                                    <span class="validity"></span><br><br>
+                                </form>
+                            </div>
+                            <div class="cart subtitle">您的商品</div>
+                            <div class="product">
+                                <div class="list">
+                                    <fieldset class="item000001001" id="index">
+                                        <legend>月見牛丼</legend>
+                                        <table cellspacing="0">
+                                            <tr>
+                                                <img src="images/gyuudon.png" alt="">
+                                            </tr>
+                                            <tr>
+                                                <td class="details">
+                                                    <table cellspacing="0" class="details">
+                                                        <tr>
+                                                            <td>下單數量：</td>
+                                                            <td>
+                                                                <input type="number" name="quantity" 
+                                                                id="quantity" value="1" min="1"
+                                                                step="1" oninput="displayNow()" required />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>商品庫存：</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>生熟食：</td>
+                                                            <td>熟食</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>有效日期：</td>
+                                                            <td>2021-12-19</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>取貨地點：</td>
+                                                            <td>桃園市中壢區中大路300號</td>
+                                                        </tr>
+                                                    </table>
+                                                    <div class="btn index">
+                                                        <div class="price index">NT$ 100</div>
+                                                        <button>移除商品</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </fieldset>
+                                    
+                                    <fieldset class="item000001003" id="index">
+                                        <legend>番茄生火腿天使細麵佐魚子醬</legend>
+                                        <table cellspacing="0">
+                                            <tr>
+                                                <img src="images/pasta.png" alt="">
+                                            </tr>
+                                            <tr>
+                                                <td class="details">
+                                                    <table cellspacing="0" class="details">
+                                                        <tr>
+                                                            <td>下單數量：</td>
+                                                            <td>
+                                                                <input type="number" name="quantity" 
+                                                                id="quantity" value="1" min="1"
+                                                                step="1" oninput="displayNow()" required />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>商品庫存：</td>
+                                                            <td>3</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>生熟食：</td>
+                                                            <td>熟食</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>有效日期：</td>
+                                                            <td>2021-12-17</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>取貨地點：</td>
+                                                            <td>桃園市中壢區中大路300號</td>
+                                                        </tr>
+                                                    </table>
+                                                    <div class="btn index">
+                                                        <div class="price index">NT$ 400</div>
+                                                        <button>移除商品</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="cart subtitle">結帳資訊</div>
+                            <div class="order">
+                                <table cellspacing="0">
+                                    <tr>
+                                        <td>姓名：</td>
+                                        <td id="order_name"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>手機：</td>
+                                        <td id="order_phone"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>地址：</td>
+                                        <td id="order_address"></td>
+                                    </tr>
+                                </table>
+                                <div class="money">
+                                    <div>金額</div>
+                                    <div class="NTD">
+                                        <div>NT$</div>
+                                        <div id="order_pay"></div>
+                                    </div>
+                                </div>
+                                <div class="comfirm">
+                                    <button>繼續瀏覽</button>
+                                    <button>確定下單</button>
+                                </div>
+                            </div>
+                         </div>
+                     </center>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="special">
+                    <div>
+                        <a href="#back">Go Back</a>
+                    </div>
+                    
+                </td>
+            </tr>
+        </tfoot>
+        </table>
+    </center>
+    <script src="js/cart_status.js"></script>
+    <script type="text/javascript">
+        displayNow();
+    </script>
+</body>
+</html>

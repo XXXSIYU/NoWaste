@@ -1,0 +1,173 @@
+:root {
+    --tbody-padding: 0.3rem;
+    --dark-bg: #242549;
+}
+
+.member_list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    align-content: space-around;
+    margin: 6rem 0rem;
+}
+
+table.member {
+    width: auto;
+    position: relative;
+    top: 0;
+    background: rgba(0, 0, 0, 0.18);
+    width: 400px;
+    margin: 12px 6px;
+}
+
+thead th {
+    background: var(--dark-bg);
+    font-weight: unset;
+    padding: 9px 12px;
+    font-size: 14px;
+    letter-spacing: 3px;
+    z-index: 10;
+    text-shadow: 0px 0px 3px #000;
+}
+
+thead th a {
+    color: #FFF !important;
+    text-decoration: none;
+    transition: 0.2s ease-in-out all;
+}
+
+thead th a:hover {
+    text-shadow: 0px 0px 3px #FFF, 0px 0px 2px #FFF;
+}
+
+table.member tbody td {
+    font-size: 16px;
+    letter-spacing: 1px;
+    vertical-align: top !important;
+}
+
+table.member td:first-of-type:not(tfoot td) {
+    text-align: right;
+    padding: var(--tbody-padding) 1rem;
+    min-width: 8ch;
+}
+
+table.member td:nth-of-type(2) {
+    text-align: left;
+    padding: var(--tbody-padding) 1rem;
+}
+
+table.member tbody tr:first-child td {
+    padding-top: calc(var(--tbody-padding) * 4);
+    padding-bottom: var(--tbody-padding);
+}
+
+table.member tbody tr:last-child td {
+    padding-top: var(--tbody-padding);
+    padding-bottom: calc(var(--tbody-padding) * 4);
+}
+
+tfoot td {
+    background: var(--dark-bg);
+}
+
+.member tfoot td div {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-content: space-around;
+    position: relative;
+    top: 0;
+    margin: calc(var(--tbody-padding) * 3) 0px;
+}
+
+button {
+    margin: 6px 9px;
+    padding-left: 9px;
+    min-width: 24%;
+    position: relative;
+    top: 0;
+    border: none;
+    background: var(--main-color-font);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color: transparent;
+    z-index: 12;
+    font-weight: 500;
+    /*filter: drop-shadow(0px 0px 2px #000)
+            drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.42));*/
+    transition: 0.2s ease-in-out;
+    letter-spacing: 1px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.6));
+}
+
+button::before {
+    content: "";
+    background: var(--main-color-font);
+    position: absolute;
+    top: -7px;
+    left: -8px;
+    width: calc(100% + 2px + 18px);
+    height: calc(100% + 2px + 12px);
+    z-index: -2;
+    clip-path: polygon(0% 0%, 0% 100%, 1px 100%, 1px 1px, calc(100% - 1px) 1px,
+    calc(100% - 1px) calc(100% - 1px), 1px calc(100% - 1px),
+    1px 100%, 100% 100%, 100% 0%);
+}
+
+caption#sql_summary {
+    padding: 6px 0px;
+}
+
+table#sql_log td {
+    padding: 12px 6px;
+}
+
+table#sql_log tr:last-of-type td {
+    border-bottom: var(--outline);
+}
+
+table#sql_log thead th {
+    padding: 6px 3px;
+    line-height: initial;
+    letter-spacing: 0px;
+}
+
+input:disabled {
+    color: rgba(255, 255, 255, 0.6) !important;
+    opacity: 0.6;
+}
+
+#flashMessage {
+    padding: 60px 0px;
+    letter-spacing: 3px;
+    font-weight: unset;
+}
+
+#flashMessage b {
+    background: var(--main-color-font);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    margin: 0px 3px;
+    font-size: 120%;
+    filter: drop-shadow(0px 0px 2px #000);
+}
+
+@media only screen and (max-width:720px) {
+    table#sql_log td:nth-of-type(3) {
+        display: table-cell;
+    }
+    table#sql_log td:nth-of-type(2) {
+        width: 32ch;
+        word-break: break-word;
+    }
+}

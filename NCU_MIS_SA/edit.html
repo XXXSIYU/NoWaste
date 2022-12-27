@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="css/mainStyle.css">
+    <link rel="stylesheet" href="css/registerStyle.css">
+    <link rel="stylesheet" href="css/membershipStyle.css">
+    <script src="statics/js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200&family=Noto+Sans+TC:wght@200&family=Big+Shoulders+Display&family=Cormorant+Garamond&family=Roboto+Slab:wght@200;300&family=Righteous&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>編輯會員資料</title>
+</head>
+<body>
+    <center>
+        <div class='wave_bg'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+            <div class='title'>No Waste
+                <div class="slogan">
+                    Cut waste. Cut emissions. Fight climate change. Our planet is drowning in waste.
+                </div></div>
+        </div>
+        <div class="bar" id="back">
+            <ul>
+                <li><a href="index.html">廢食一覽</a></li>
+                <li><a href="register.html">會員註冊</a></li>
+                <li><a href="upload.html">上傳廢食</a></li>
+                <li><a href="cart.html">購物車</a></li>
+            </ul>
+        </div>
+        <table cellspacing="0">
+            <tr>
+                <td id="admin_func">
+                    <a href="membership.html">會員清單</a>
+                    <a href="accept.html">廢食審核</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign">Edit Member's Information</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="content">
+                    <center>
+                    <div class="conta">
+                        <form id="form" accept-charset="utf-8" autocomplete="off" >
+                            <br>
+                            <input type="hidden" name="_method" value="POST">
+                            <label for="member_name">會員名稱：</label><br>
+                            <input type="text" name="name" id="member_name" pattern=".{1,30}"
+                            placeholder="上限30個字元" required />
+                            <span class="validity"></span><br>
+                            
+                            <label for="member_phone">手機：</label><br>
+                            <input type="tel" name="phone" id="member_phone" pattern="09\d{8}" 
+                            placeholder="09開頭共10位數的手機格式" inputmode="numeric" required />
+                            <span class="validity"></span><br>
+                            
+                            <label for="member_password">密碼：</label><br>
+                            <div id="warning">
+                            限制英文字母、數字與特殊符號<br>
+                            長度至少大於8<br>
+                            至少有一個數字和一個英文字母<br>				
+                            </div>
+                            <input type="password" name="password" id="member_password" required
+                            pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" />
+                            <span class="validity"></span><br>
+                            
+                            <label for="member_address">地址：</label><br>
+                            <input type="text" name="address" id="member_address" required />
+                            <span class="validity"></span><br>
+
+                            <label for="member_seller">是否要成為賣家：</label>
+                            <input type="radio" name="seller" value="yes" required />是
+                            <input type="radio" name="seller" value="no" required />否
+                            <span class="check"></span><br>
+                            
+                            <label for="member_times">最後修改：</label><br>
+                            <input type="text" name="times" id="member_times" disabled />
+                            <br><br>
+                            <input type="button" id="submit" value="更新" /><br><br><br>
+                        </form>
+                    </div>
+                    </center>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign" class="message"  style="display: none;">Successful Message</td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="flashMessage" class="message" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign">SQL Status Table</td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                    <table class="cake-sql-log" id="sql_log" summary="Cake SQL Log" cellspacing="0">
+                        <caption id="sql_summary">(default) 0 query took 0 ms</caption>
+                        <thead>
+                            <tr>
+                                <th>Nr</th>
+                                <th>Query</th>
+                                <th>Error</th>
+                                <th>Affected</th>
+                                <th>Num. rows</th>
+                                <th>Took (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <br><br><br>
+                </td>
+            </tr>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="special">
+                        <div>
+                            <a href="#back">Go Back</a>
+                        </div>
+                        
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </center>
+    <script type="text/javascript">
+        // 取得網址參數
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var id = url.searchParams.get("id");
+        var sql_num = 0;
+        let wait = 900;
+
+        function updateMember(id) {
+            var name = $('#member_name').val();
+            var phone = $('#member_phone').val();
+            var password = $('#member_password').val();
+            var address = $('#member_address').val();
+            var seller = $('input[name="seller"]:checked').val();
+            var create_datetime = $('#member_times').val();
+            
+            if (seller == "yes")
+                seller = true;
+            else
+                seller = false;
+
+            var password_rule = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            var phone_rule = /^09\d{8}$/;
+
+            if(!password_rule.test(password)) {
+                alert("密碼格式不符，長度至少8，且至少包含一個數字和英文字母！");
+            }
+            else if(!phone_rule.test(phone)) {
+                alert("手機格式不符！");
+            }
+            else if(name == "" || address == "") {
+                alert("欄位不能為空！");
+            }
+            else if(name.length > 30) {
+                alert("名字太長！");
+            }
+            else {
+                // 將資料組成JSON格式
+                var data_object = {
+                    "id": id,
+                    "name": name,
+                    "phone": phone,
+                    "password": password,
+                    "address": address,
+                    "seller": seller,
+                    "create_datetime": create_datetime
+                };
+
+                // 將JSON格式轉換成字串
+                var data_string = JSON.stringify(data_object);
+
+                // 發出POST的PUT請求
+                $.ajax({
+                        type: "PUT",
+                        url: "api/member.do",
+                        data: data_string,
+                        crossDomain: true,
+                        cache: false,
+                        dataType: 'json',
+                        timeout: 5000,
+                        success: function (response) {
+                            $("#flashMessage").fadeOut(wait/5);
+                            $('td.message').fadeOut(wait/5);
+                            $('#flashMessage').html(response.message);
+                            $("#flashMessage").fadeIn(wait);
+                            $('td.message').fadeIn(wait);
+                            if(response.status == 200){
+                                updateSQLTable(response.response);
+                                getMember();
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            console.log(XMLHttpRequest.readyState);
+                            console.log(textStatus);
+                            alert("無法連線到伺服器！");
+                        }
+                });
+            }
+        }
+
+        // 更新SQL指令歷史表格
+        function updateSQLTable(data) {
+            var time = (data.time / 1000000).toFixed(2);
+            var table_html = "";
+            
+            sql_num += 1
+
+            table_html += '<tr>';
+            table_html += '<td>' + sql_num + '</td>';
+            table_html += '<td>' + data.sql + '</td>';
+            table_html += '<td style="text-align: right">' + '0' + '</td>';
+            table_html += '<td style="text-align: right">' + data.row + '</td>';
+            table_html += '<td style="text-align: right">' + data.row + '</td>';
+            table_html += '<td style="text-align: right">' + time + '</td>';
+            table_html += '</tr>';
+            $("#sql_log > tbody").append(table_html);
+            $("#sql_summary").html("(default) " + data.row + " queries took " + time + " ms");
+        }
+
+        function getMember() {
+            $.ajax({
+                type: "GET",
+                url: "api/member.do",
+                crossDomain: true,
+                data: "id=" + id,
+                cache: false,
+                dataType: 'json',
+                timeout: 5000,
+                success: function (response) {
+                    if(response.status == 200){
+                    	updateSQLTable(response.response);
+                    	document.getElementById('member_name').value = response['response']['data'][0]['name'];
+                    	document.getElementById('member_phone').value = response['response']['data'][0]['phone'];
+                    	document.getElementById('member_password').value = response['response']['data'][0]['password'];
+                    	document.getElementById('member_address').value = response['response']['data'][0]['address'];
+                        if (response['response']['data'][0]['seller'] == true)
+                            $("input[name=seller][value='yes']").attr('checked',true);
+                        else
+                            $("input[name=seller][value='no']").attr('checked',true);
+                    	document.getElementById('member_times').value = response['response']['data'][0]['create_datetime'];
+                    }
+                    console.log(response);
+                },
+                error: function () {
+                    alert("無法連線到伺服器！");
+                }
+            });
+        }
+
+        $('#submit').click(function() {
+            updateMember(id);
+        });
+                
+        $(document).ready(function() {
+        	// 發出GET的AJAX請求取得原本該會員的資料
+         	$("#sql_log > tbody").empty();
+            getMember();
+        });
+    </script>
+</body>
+</html>

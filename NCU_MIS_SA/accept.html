@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="css/mainStyle.css">
+    <link rel="stylesheet" href="css/acceptStyle.css">
+    <script src="statics/js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200&family=Noto+Sans+TC:wght@200&family=Big+Shoulders+Display&family=Cormorant+Garamond&family=Roboto+Slab:wght@200;300&family=Righteous&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>待審核的廢食</title>
+</head>
+<body>
+    <center>
+        <div class='wave_bg'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+            <div class='title'>No Waste
+                <div class="slogan">
+                    Cut waste. Cut emissions. Fight climate change. Our planet is drowning in waste.
+                </div></div>
+        </div>
+        <div class="bar" id="back">
+            <ul>
+                <li><a href="index.html">廢食一覽</a></li>
+                <li><a href="register.html">會員註冊</a></li>
+                <li><a href="upload.html">上傳廢食</a></li>
+                <li><a href="cart.html">購物車</a></li>
+            </ul>
+        </div>
+        <table cellspacing="0">
+            <tr>
+                <td id="admin_func">
+                    <a href="membership.html">會員清單</a>
+                    <a href="accept.html">廢食審核</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Confirm">Confirm Applications</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="content">
+                     <center>
+                         <div class="temp post">
+                            <fieldset class="item000001002">
+                                <legend>橄欖油蒜蝦 Gambas Al Ajillo</legend>
+                                <table cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <img src="images/allijo.png" alt="">
+                                            <div>
+                                                <div class="status">熟食</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <table cellspacing="0" class="details">
+                                                <tr id="id">
+                                                    <td>廢食編號：</td>
+                                                    <td>000001002</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>庫存：</td>
+                                                    <td>3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>保存期限：</td>
+                                                    <td>2021/12/27</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>廢食描述：</td>
+                                                    <td>Tapas經典款<br>鮮嫩彈牙的白蝦搭配濃郁的蒜味橄欖油</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>賣家：</td>
+                                                    <td>小京 Tiger Kyomoto</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>手機：</td>
+                                                    <td>0912345678</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>取貨地址：</td>
+                                                    <td>桃園市中壢區中大路300號</td>
+                                                </tr>
+                                            </table>
+                                            <div style="text-align: right;">
+                                                <div class="price">NT$ 180</div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div style="text-align: right;">
+                                    <button>確定發布</button>
+                                    <button>拒絕發布</button>
+                                </div>
+                            </fieldset>
+                         </div>
+                     </center>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign" class="message"  style="display: none;">Successful Message</td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="flashMessage" class="message" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign">SQL Status Table</td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                    <table class="cake-sql-log" id="sql_log" summary="Cake SQL Log" cellspacing="0">
+                        <caption id="sql_summary">(default) 0 query took 0 ms</caption>
+                        <thead>
+                            <tr>
+                                <th>Nr</th>
+                                <th>Query</th>
+                                <th>Error</th>
+                                <th>Affected</th>
+                                <th>Num. rows</th>
+                                <th>Took (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <br><br><br>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="special">
+                    <div>
+                        <a href="#back">Go Back</a>
+                    </div>
+                    
+                </td>
+            </tr>
+        </tfoot>
+        </table>
+    </center>
+    <script type="text/javascript">
+        // 全域變數紀錄SQL指令下的次數
+        var sql_num = 0;
+        let wait = 900;
+        function deleteTempFood(id) {
+            var check = window.confirm("確認拒絕發布？");
+            if (check == true) {
+                console.log("You pressed OK!");
+                $("fieldset.item"+ pad(id, 9)).fadeOut(wait);
+                setTimeout(function(){
+                    var request = {'id': id};
+                    console.log('id: ' + id);
+                    var data_string = JSON.stringify(request);
+                    $.ajax({
+                        type: "DELETE",
+                        url: "api/temp_food.do",
+                        crossDomain: true,
+                        data: data_string,
+                        cache: false,
+                        dataType: 'json',
+                        timeout: 5000,
+                        success: function (response) {
+                            if(response.status == 200){
+                                $("#flashMessage").fadeOut(wait/5);
+                                $('td.message').fadeOut(wait/5);
+                                $("#flashMessage").html("已經成功<b>拒絕發布</b>……");
+                                $("#flashMessage").fadeIn(wait);
+                                $('td.message').fadeIn(wait);
+                                getAllProduct();
+                            }
+                            console.log(response);
+                        },
+                        error: function () {
+                            getAllProduct();
+                            alert("無法連線到伺服器！");
+                        }
+                    });
+                },wait);
+            }
+            else {
+                console.log("You pressed Cancel!");
+            }
+        }
+
+        function acceptFood(id) {
+            var check = window.confirm("確認發布？");
+            if (check == true) {
+                console.log("You pressed OK!");
+                $("fieldset.item"+ pad(id, 9)).fadeOut(wait);
+                setTimeout(function(){
+                    var request = {'id': id};
+                    console.log('id: ' + id);
+                    var data_string = JSON.stringify(request);
+                    $.ajax({
+                        type: "POST",
+                        url: "api/temp_food.do",
+                        crossDomain: true,
+                        data: data_string,
+                        cache: false,
+                        dataType: 'json',
+                        timeout: 5000,
+                        success: function (response) {
+                            if(response.status == 200){
+                                $("#flashMessage").fadeOut(wait/5);
+                                $('td.message').fadeOut(wait/5);
+                                $("#flashMessage").html("已經成功<b>發布</b>……");
+                                $("#flashMessage").fadeIn(wait);
+                                $('td.message').fadeIn(wait);
+                                getAllProduct()
+                            }
+                            console.log(response);
+                        },
+                        error: function () {
+                            alert("無法連線到伺服器！");
+                        }
+                    });
+                    $.ajax({
+                        type: "DELETE",
+                        url: "api/temp_food.do",
+                        crossDomain: true,
+                        data: data_string,
+                        cache: false,
+                        dataType: 'json',
+                        timeout: 5000,
+                        success: function (response) {
+                            if(response.status == 200){
+                                getAllProduct()
+                            }
+                            console.log(response);
+                        },
+                        error: function () {
+                            alert("無法連線到伺服器！");
+                        }
+                    });
+                },wait);
+            }
+            else {
+                console.log("You pressed Cancel!");
+            }
+        }
+
+        function getAllProduct() {
+            $.ajax({
+                type: "GET",
+                url: "api/temp_food.do",
+                crossDomain: true,
+                cache: false,
+                dataType: 'json',
+                timeout: 5000,
+                success: function (response) {
+                    if (response.status == 200) {
+                        updateTable(response.response.data);
+                        updateSQLTable(response.response);
+                    }
+                    console.log(response);
+                },
+                error: function () {
+                    alert("無法連線到伺服器！");
+                }
+            });
+        }
+        
+        // 更新廢食列表表格
+        function updateTable(data) {
+            $(".temp.post").empty();
+            var table_html = '';
+            $.each(data, function(index, value) {
+                table_html +=   '<fieldset class="item' + pad(value['id'], 9) +'">' +
+                                    '<legend>' + value['name'] +'</legend>' + 
+                                    '<table cellspacing="0">' +
+                                        '<tr>' +
+                                            '<td>' +
+                                                '<img src="images/' + value['image'] + '" alt="">' +
+                                                '<div><div class="status">' +
+                                                raw(value['if_raw']) +
+                                                '</div></div>' +
+                                            '</td>' + 
+                                            '<td>' +
+                                                '<table cellspacing="0" class="details">' +
+                                                    '<tr id="id">' +
+                                                        '<td>廢食編號：</td>' +
+                                                        '<td>' + pad(value['id'], 9) + '</td>' +
+                                                    '</tr>' +
+                                                    '<tr>' +
+                                                        '<td>庫存：</td>' +
+                                                        '<td>' + value['stock'] + '</td>' +
+                                                    '</tr>' +
+                                                    '<tr>' +
+                                                        '<td>保存期限：</td>' +
+                                                        '<td>' + value['exp'] + '</td>' +
+                                                    '</tr>'+
+                                                    '<tr>'+
+                                                        '<td>廢食描述：</td>' +
+                                                        '<td>' + transName(value['describe']) +'</td>' +
+                                                    '</tr>'+
+                                                    '<tr>'+
+                                                        '<td>賣家：</td>'+
+                                                        '<td id="name'+value['food_seller_id']+'">' +
+                                                        '</td>' +
+                                                    '</tr>' +
+                                                    '<tr>' +
+                                                        '<td>手機：</td>' +
+                                                        '<td id="phone'+value['food_seller_id']+'">' +
+                                                        '</td>' +
+                                                    '</tr>' +
+                                                    '<tr>'+
+                                                        '<td>取貨地址：</td>'+
+                                                        '<td>' + value['address'] + '</td>' +
+                                                    '</tr>' +
+                                                '</table>' +
+                                                '<div style="text-align: right;">' +
+                                                    '<div class="price">NT$ ' + value['price'] + '</div>' +
+                                                '</div>'+
+                                            '</td>'+
+                                        '</tr>'+
+                                    '</table>'+
+                                    '<div style="text-align: right;">'+
+                                        '<button onclick="acceptFood(' + 
+                                                value['id'] + 
+                                                ')">確定發布</button>'+
+                                        '<button onclick="deleteTempFood(' + 
+                                                value['id'] + 
+                                                ')">拒絕發布</button>'+
+                                    '</div>'+
+                                '</fieldset>';
+            })
+            if (table_html != "") {
+                $(".temp.post").append(table_html);
+                getMemberData();
+            }
+            else
+                $(".temp.post").append('<p id="null">現無任何待審核的廢食。</p>');
+        }
+
+        // 更新SQL指令歷史表格
+        function updateSQLTable(data) {
+            $("#sql_log > tbody").empty();
+            var time = (data.time / 1000000).toFixed(2);
+            var table_html = "";
+            
+            sql_num = 0;
+            sql_num += 1
+
+            table_html += '<tr>';
+            table_html += '<td>' + sql_num + '</td>';
+            table_html += '<td>' + data.sql + '</td>';
+            table_html += '<td style="text-align: right">' + '0' + '</td>';
+            table_html += '<td style="text-align: right">' + data.row + '</td>';
+            table_html += '<td style="text-align: right">' + data.row + '</td>';
+            table_html += '<td style="text-align: right">' + time + '</td>';
+            table_html += '</tr>';
+            $("#sql_log > tbody").append(table_html);
+            $("#sql_summary").html("(default) " + data.row + " queries took " + time + " ms");
+        }
+
+        $(document).ready(function() {
+            $(".temp.post").empty();
+            getAllProduct();
+        });
+
+        function getMemberData() {
+            $.ajax({
+                type: "GET",
+                url: "api/member.do",
+                crossDomain: true,
+                cache: false,
+                dataType: 'json',
+                timeout: 5000,
+                success: function (response) {
+                    if(response.status == 200){
+                        updateTableMember(response.response.data);
+                    }
+                },
+                error: function () {
+                    alert("無法連線到伺服器！");
+                }
+            });
+        }
+
+        function updateTableMember(data) {
+            $.each(data, function(index, value) {
+                if (document.getElementById('name'+value['id']) != null){
+                    document.getElementById('name'+value['id']).textContent = value['name'];
+                    document.getElementById('phone'+value['id']).textContent = value['phone'];
+                }
+            })
+        }
+
+        function transName(name){
+            return name.replaceAll("\n","<br>")
+        }
+
+        function pad(num, n) {
+            var i = (num + "").length;
+            while (i++ < n) num = "0" + num;
+            return num;
+        }
+
+        function raw(bol) {
+            if (bol == "1")
+                return "熟食";
+            else
+                return "生食";
+        }
+
+    </script>
+</body>
+</html>

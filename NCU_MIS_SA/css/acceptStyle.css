@@ -1,0 +1,246 @@
+.temp.post {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: space-around;
+}
+ 
+fieldset {
+    display: inline-block;
+    margin: 30px;
+    max-width: 560px;
+}
+ 
+fieldset table td:not(.details td) {
+    padding: 18px;
+}
+ 
+legend {
+    font-family: 'Quicksand', Noto Serif TC;
+    padding: 0px 6px;
+    max-width: 42ch;
+    text-align: justify;
+}
+ 
+fieldset div.status {
+    font-size: 18px;
+    font-family: Noto Serif TC;
+    border: 1px solid #FFF;
+    display: inline-block;
+    margin-top: 6px;
+    padding: 0px 9px;
+}
+ 
+fieldset img {
+    max-width: 180px;
+}
+
+fieldset table {
+    background: none;
+}
+ 
+.details td {
+    border: none;
+    text-align: left;
+    padding: 9px 3px;
+    font-size: 16px;
+}
+ 
+.price {
+    font-size: 24px;
+    border: 1px solid #FFF;
+    display: inline-block;
+    padding: 6px;
+    text-align: center;
+}
+ 
+fieldset button, .comfirm button {
+    background: var(--dark-purple);
+    border:none;
+    padding: 9px 12px;
+    color: #FFF;
+    outline: var(--outline);
+    outline-offset: -3px;
+    margin-top: 18px;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+#sql_log thead th {
+    background: #242549;;
+    font-weight: unset;
+    padding: 9px 12px;
+    font-size: 14px;
+    letter-spacing: 3px;
+    z-index: 10;
+    text-shadow: 0px 0px 3px #000;
+}
+
+caption#sql_summary {
+    padding: 6px 0px;
+}
+
+table#sql_log td {
+    padding: 12px 6px;
+}
+
+table#sql_log tr:last-of-type td {
+    border-bottom: var(--outline);
+}
+
+table#sql_log thead th {
+    padding: 6px 3px;
+    line-height: initial;
+    letter-spacing: 0px;
+}
+
+input:disabled {
+    color: rgba(255, 255, 255, 0.6) !important;
+    opacity: 0.6;
+}
+
+#flashMessage {
+    padding: 60px 0px;
+    letter-spacing: 3px;
+    font-weight: unset;
+}
+
+#flashMessage b {
+    background: var(--main-color-font);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    margin: 0px 3px;
+    font-size: 120%;
+    filter: drop-shadow(0px 0px 2px #000);
+}
+
+
+/*  index page  */
+
+.content li {
+    list-style-type: none;
+    margin: 6px 0px;
+    font-family: var(--content-eng-font-family),var(--content-ch-font-family);
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.content li:not(.special):before {
+    content: '❧';
+    margin-right: 6px;
+    background: var(--main-color-font);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color: transparent;
+}
+
+.btn.index {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 9px;
+}
+
+.price.index {
+    margin: 6px 9px;
+    margin-top: 12px;
+    padding-left: 9px;
+    position: relative;
+    top: 0;
+    border: none;
+    background: var(--main-color-font);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color: transparent;
+    z-index: 12;
+    font-weight: 500;
+    filter: drop-shadow(0px 0px 2px #000)
+            drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.42));
+    transition: 0.2s ease-in-out;
+}
+
+.price.index:hover {
+    filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.6));
+}
+
+.price.index::before {
+    content: "";
+    background: var(--main-color-font);
+    position: absolute;
+    top: -7px;
+    left: -8px;
+    width: calc(100% + 2px + 18px);
+    height: calc(100% + 2px + 12px);
+    z-index: -2;
+    clip-path: polygon(0% 0%, 0% 100%, 1px 100%, 1px 1px, calc(100% - 1px) 1px,
+    calc(100% - 1px) calc(100% - 1px), 1px calc(100% - 1px),
+    1px 100%, 100% 100%, 100% 0%);
+}
+
+td.details ul {
+    margin-bottom: 18px;
+}
+
+td.details td:not(tr:first-of-type) {
+    font-size: 14px;
+    padding: 0px 3px;
+    letter-spacing: 1px;
+}
+
+.details tr:nth-of-type(n+1) td:first-of-type {
+    min-width: 10ch;
+    vertical-align: top;
+}
+
+@media only screen and (max-width:720px) {
+    table#sql_log td:nth-of-type(3) {
+        display: table-cell;
+    }
+    table#sql_log td:nth-of-type(2) {
+        width: 32ch;
+        word-break: break-word;
+    }
+}
+
+@media only screen and (max-width:520px) {
+    fieldset img {
+        max-width: 90px;
+    }
+    fieldset td table td:first-child:not(.content) {
+        display: none;
+    }
+    .content li:not(.special):before {
+        content: none;
+    }
+    legend {
+        font-size: 72%;
+    }
+    .content li {
+        font-size: 16px;
+    }
+    fieldset {
+        margin: 24px 6px;
+        padding-bottom: 0px;
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+    fieldset td:first-of-type {
+        padding-left: 6px !important;
+        padding-right: 12px !important;
+    }
+    td.details {
+        padding-right: 12px !important;
+    }
+    .btn.index {
+        flex-direction: column;
+    }
+    button:not(.btn.index button) {
+        margin-bottom: 12px;
+    }
+}

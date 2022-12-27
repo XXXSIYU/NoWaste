@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="css/mainStyle.css">
+    <link rel="stylesheet" href="css/membershipStyle.css">
+    <script src="statics/js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200&family=Noto+Sans+TC:wght@200&family=Big+Shoulders+Display&family=Cormorant+Garamond&family=Roboto+Slab:wght@200;300&family=Righteous&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>會員列表</title>
+</head>
+<body>
+    <center>
+        <div class='wave_bg'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+            <div class='title'>No Waste
+                <div class="slogan">
+                    Cut waste. Cut emissions. Fight climate change. Our planet is drowning in waste.
+                </div></div>
+        </div>
+        <div class="bar" id="back">
+            <ul>
+                <li><a href="index.html">廢食一覽</a></li>
+                <li><a href="register.html">會員註冊</a></li>
+                <li><a href="upload.html">上傳廢食</a></li>
+                <li><a href="cart.html">購物車</a></li>
+            </ul>
+        </div>
+        <table cellspacing="0">
+            <tr>
+                <td id="admin_func">
+                    <a href="membership.html">會員清單</a>
+                    <a href="accept.html">廢食審核</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign">Member List</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="content">
+                    <center>
+                    <div class="conta">
+                        <div class="member_list">
+                            <table cellspacing="0" class="member">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">編號：00000064</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>姓名</td>
+                                        <td>王曉明</td>
+                                    </tr>
+                                    <tr>
+                                        <td>手機</td>
+                                        <td>0912345678</td>
+                                    </tr>
+                                    <tr>
+                                        <td>地址</td>
+                                        <td>桃園市中壢區中大路300號</td>
+                                    </tr>
+                                    <tr>
+                                        <td>賣家</td>
+                                        <td>是</td>
+                                    </tr>
+                                    <tr>
+                                        <td>更新時間</td>
+                                        <td>2021-12-12 GMT+8 16:52:05</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2"><div>
+                                            <button>編輯</button>
+                                            <button>刪除</button>
+                                        </div></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    </center>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign" class="message"  style="display: none;">Successful Message</td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="flashMessage" class="message" style="display: none;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign">SQL Status Table</td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                    <table class="cake-sql-log" id="sql_log" summary="Cake SQL Log" cellspacing="0">
+                        <caption id="sql_summary">(default) 0 query took 0 ms</caption>
+                        <thead>
+                            <tr>
+                                <th>Nr</th>
+                                <th>Query</th>
+                                <th>Error</th>
+                                <th>Affected</th>
+                                <th>Num. rows</th>
+                                <th>Took (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <br><br><br>
+                </td>
+            </tr>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="special">
+                        <div>
+                            <a href="#back">Go Back</a>
+                        </div>
+                        
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <script type="text/javascript">
+            // 全域變數紀錄SQL指令下的次數
+            var sql_num = 0;
+            let wait = 900;
+            function deleteMember(id) {
+                var check = window.confirm("確認刪除會員？");
+                if (check == true) {
+                    console.log("You pressed OK!");
+                    $("table#" + id).fadeOut(wait);
+                    setTimeout(function(){
+                        var request = {'id': id};
+                        console.log('id: ' + id);
+                        var data_string = JSON.stringify(request);
+                        $.ajax({
+                            type: "DELETE",
+                            url: "api/member.do",
+                            crossDomain: true,
+                            data: data_string,
+                            cache: false,
+                            dataType: 'json',
+                            timeout: 5000,
+                            success: function (response) {
+                                if(response.status == 200){
+                                    $("#flashMessage").fadeOut(wait/5);
+                                    $('td.message').fadeOut(wait/5);
+                                    $("#flashMessage").html("已經成功<b>刪除會員</b>……");
+                                    $("#flashMessage").fadeIn(wait);
+                                    $('td.message').fadeIn(wait);
+                                    getAllMember();
+                                }
+                                console.log(response);
+                            },
+                            error: function () {
+                                alert("無法連線到伺服器！");
+                            }
+                        });
+                    },wait);
+                }
+                else {
+                    console.log("You pressed Cancel!");
+                }
+            }
+
+            function getAllMember() {
+                // 發出POST的GET請求取得所有會員列表
+                $.ajax({
+                        type: "GET",
+                        url: "api/member.do",
+                        crossDomain: true,
+                        cache: false,
+                        dataType: 'json',
+                        timeout: 5000,
+                        success: function (response) {
+                            if(response.status == 200){
+                                updateTable(response.response.data);
+                                updateSQLTable(response.response);
+                            }
+                            console.log(response);
+                        },
+                        error: function () {
+                            alert("無法連線到伺服器！");
+                        }
+                });
+            }
+            
+            // 更新會員列表表格
+            function updateTable(data) {
+                $(".member_list").empty();
+                var table_html = '';
+                $.each(data, function(index, value) {
+                    table_html +='<table cellspacing="0" class="member" id="'+value['id']+'">' +
+                                    '<thead>' +
+                                        '<tr>' +
+                                            '<th colspan="2"><a href="seller.html?id=' + value['id'] + '">' + 
+                                                '會員編號：' + pad(value['id'], 8) + 
+                                            '</a></th>' + 
+                                        '</tr>' + 
+                                    '</thead>';
+                    table_html +=   '<tbody>' +
+                                        '<tr>' + 
+                                            '<td>姓名</td>' + 
+                                            '<td>' + value['name'] + '</td>' +
+                                        '</tr>';
+                    table_html +=       '<tr>' +
+                                            '<td>手機</td>' +
+                                            '<td>'+ value['phone'] +'</td>' +
+                                        '</tr>';
+                    table_html +=       '<tr>' + 
+                                            '<td>地址</td>' +
+                                            '<td>' + value['address'] + '</td>' +
+                                        '</tr>';
+                    table_html +=       '<tr>' + 
+                                            '<td>賣家</td>' +
+                                            '<td>'+ seller(value['seller']) +'</td>' +
+                                        '</tr>';
+                    table_html +=       '<tr>' + 
+                                            '<td>最後編輯</td>' +
+                                            '<td>' + value['create_datetime'] + '</td>' +
+                                        '</tr>' +
+                                    '</tbody>';
+                    table_html +=   '<tfoot>' + 
+                                        '<tr>' + 
+                                            '<td colspan="2"><div>' +
+                                                '<button onclick="window.location.href=\'edit.html?id=' +
+                                                value['id'] +
+                                                '\';">編輯</button>';
+                    table_html +=               '<button onclick="deleteMember(' + 
+                                                value['id'] + 
+                                                ')">刪除</button>' + 
+                                            '</div></td>' +
+                                        '</tr>' +
+                                    '</tfoot>' +
+                                '</table>';
+                })
+
+                $(".member_list").append(table_html);
+            }
+            
+            // 更新SQL指令歷史表格
+            function updateSQLTable(data) {
+                $("#sql_log > tbody").empty();
+                var time = (data.time / 1000000).toFixed(2);
+                var table_html = "";
+                
+                sql_num = 0;
+                sql_num += 1
+
+                table_html += '<tr>';
+                table_html += '<td>' + sql_num + '</td>';
+                table_html += '<td>' + data.sql + '</td>';
+                table_html += '<td style="text-align: right">' + '0' + '</td>';
+                table_html += '<td style="text-align: right">' + data.row + '</td>';
+                table_html += '<td style="text-align: right">' + data.row + '</td>';
+                table_html += '<td style="text-align: right">' + time + '</td>';
+                table_html += '</tr>';
+                $("#sql_log > tbody").append(table_html);
+                $("#sql_summary").html("(default) " + data.row + " queries took " + time + " ms");
+            }
+            $(document).ready(function() {
+                getAllMember();
+            });
+
+            function pad(num, n) {
+                var i = (num + "").length;
+                while (i++ < n) num = "0" + num;
+                return num;
+            }
+
+            function seller(bol) {
+                if (bol == "1")
+                    return "是";
+                else
+                    return "否";
+            }
+        </script>
+    </center>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Seller Page</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="css/mainStyle.css">
+        <link rel="stylesheet" href="css/sellerStyle.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <script src="statics/js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@200&family=Big+Shoulders+Display&family=Cormorant+Garamond&family=Roboto+Slab:wght@200;300&family=Righteous&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <body>    
+        <center>
+            <div class='wave_bg'>
+                <div class='wave -one'></div>
+                <div class='wave -two'></div>
+                <div class='wave -three'></div>
+                <div class='title'>No Waste
+                    <div class="slogan">
+                        Cut waste. Cut emissions. Fight climate change. Our planet is drowning in waste.
+                    </div></div>
+            </div>
+            <div class="bar" id="back">
+                <ul>
+                    <li><a href="index.html">廢食一覽</a></li>
+                    <li><a href="register.html">會員註冊</a></li>
+                    <li><a href="upload.html">上傳廢食</a></li>
+                    <li><a href="cart.html">購物車</a></li>
+                </ul>
+            </div>
+            <table cellspacing="0">
+                <tr>
+                    <div class="seller main">
+                        <div class="head img">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Windows_Settings_app_icon.png/1024px-Windows_Settings_app_icon.png" alt="">
+                        </div>
+                        <div class="seller name" id="name">Sample Name of Sellers</div>
+                        <div class="seller list">Food List</div>
+                        <div class="seller food">
+                            <a>
+                                <div class="food_card">
+                                    <img src="images/omerice.png" alt="">
+                                    <div>
+                                        <p>蛋包飯<br>Omelette Rice</p>
+                                        <p>100元</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </tr>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="special">
+                            <div>
+                                <a href="#back">Go Back</a>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </center>
+        <script type="text/javascript">
+            // 取得網址參數
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            var id = url.searchParams.get("id");
+            var sql_num = 0;
+
+            function getAllProduct() {
+                $.ajax({
+                    type: "GET",
+                    url: "api/product.do",
+                    crossDomain: true,
+                    cache: false,
+                    dataType: 'json',
+                    timeout: 5000,
+                    success: function (response) {
+                        if (response.status == 200) {
+                            updateTable(response.response.data);
+                        }
+                        console.log(response);
+                    },
+                    error: function () {
+                        alert("無法連線到伺服器！");
+                    }
+                });
+            }
+            
+            // 更新廢食列表表格
+            function updateTable(data) {
+                $(".seller.food").empty();
+                var table_html = '';
+                $.each(data, function(index, value) {
+                    if (value['food_seller_id'] == id) {
+                    table_html +=   '<a>' +
+                                        '<div class="food_card">' + 
+                                            '<img src="images/' + value['image'] + '" alt="">' +
+                                            '<div>' + 
+                                                '<p>'+ transName(value['name']) +'</p>' + 
+                                                '<p>' + value['price'] +'元</p>' + 
+                                            '</div>' + 
+                                        '</div>' + 
+                                    '</a>';
+                    }
+                })
+                if (table_html != "")
+                    $(".seller.food").append(table_html);
+                else
+                    $(".seller.food").append('<p id="null">現無販賣任何廢食。</p>');
+            }
+
+            $(document).ready(function() {
+                getAllProduct();
+                $(".seller.name").empty();
+                // 發出GET的AJAX請求取得原本該會員的資料
+                getMember();
+            });
+
+            function getMember() {
+                $.ajax({
+                    type: "GET",
+                    url: "api/member.do",
+                    crossDomain: true,
+                    data: "id=" + id,
+                    cache: false,
+                    dataType: 'json',
+                    timeout: 5000,
+                    success: function (response) {
+                        if(response.status == 200){
+                            document.getElementById('name').textContent = response['response']['data'][0]['name'];
+                        }
+                    },
+                    error: function () {
+                        alert("無法連線到伺服器！");
+                    }
+                });
+            }
+
+            function transName(name){
+                return name.replace("\n","<br>")
+            }
+        </script>
+    </body>
+</html>

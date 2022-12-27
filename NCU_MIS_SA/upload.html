@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="css/mainStyle.css">
+    <link rel="stylesheet" href="css/registerStyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@200&family=Noto+Sans+TC:wght@200&family=Big+Shoulders+Display&family=Cormorant+Garamond&family=Roboto+Slab:wght@200;300&family=Righteous&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>廢食上傳</title>
+</head>
+<body>
+    <center>
+        <div class='wave_bg'>
+            <div class='wave -one'></div>
+            <div class='wave -two'></div>
+            <div class='wave -three'></div>
+            <div class='title'>No Waste
+                <div class="slogan">
+                    Cut waste. Cut emissions. Fight climate change. Our planet is drowning in waste.
+                </div></div>
+        </div>
+        <div class="bar" id="back">
+            <ul>
+                <li><a href="index.html">廢食一覽</a></li>
+                <li><a href="register.html">會員註冊</a></li>
+                <li><a href="upload.html">上傳廢食</a></li>
+                <li><a href="cart.html">購物車</a></li>
+            </ul>
+        </div>
+        <table cellspacing="0">
+            <tr>
+                <td id="admin_func">
+                    <a href="membership.html">會員清單</a>
+                    <a href="accept.html">廢食審核</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" id="Sign">Upload Your Food</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="content">
+                    <center>
+                    <div class="conta">
+                        <!-- onsubmit="alert('已送出');return false;"-->
+                        <form onsubmit="alert('已送出');return false;" accept-charset="utf-8" autocomplete="off" >
+                            <font id="subtitle">廢食上傳</font><br>
+                            <label for="name">商品名稱：</label><br>
+                            <input type="text" name="name" id="name" pattern=".{1,64}"
+                            placeholder="上限64個字元" required />
+                            <span class="validity"></span><br>
+                            
+                            <label for="price">價格：</label><br>
+                            <input type="number" name="price" id="price" min="0" step="1" required />
+                            <span class="validity"></span><br>
+                            
+                            <label for="stock">庫存：</label><br>
+                            <input type="number" name="stock" id="stock" min="1" step="1" required />
+                            <span class="validity"></span><br>
+
+                            <label for="exp">保存期限：</label><br>
+                            <input type="date" name="exp" id="exp" required oninput="displayNow()" />
+                            <span class="validity"></span><br>
+
+                            <label for="address">取貨地址：</label><br>
+                            <input type="text" name="address" id="address" required />
+                            <span class="validity"></span><br>
+
+                            <label for="exp">廢食圖片：</label><br>
+                            <div class="upload_choose">
+                                <span id="warning" class="upload_drag_area">上傳格式限為 jpg/jpeg、png、gif</span>
+                                <br>
+                                <input id="fileImage" type="file" size="30" accept="image/jpeg,image/png,image/gif" required />
+                                <span class="validity"></span><br>
+                            </div>
+
+                            <label for="description">廢食描述：</label><br>
+                            <textarea name="description" id="description"
+                            cols="24" rows="6" maxlength="200" required></textarea>
+                            <span class="validity"></span><br>
+
+                            <label for="">廢食為生食熟食：</label>
+                            <input type="radio" name="raw" value="yes" required />生食
+                            <input type="radio" name="raw" value="no" required />熟食
+                            <span class="check"></span><br>
+
+                            <br><br><input type="submit" value="提交" /><br>
+                        </form>
+                    </div>
+                    </center>
+                </td>
+            </tr>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="special">
+                        <div>
+                            <a href="#back">Go Back</a>
+                        </div>
+                        
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </center>
+    <script type="text/javascript">
+        // 在input:date裡加上限制今天以後的日期
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ('0'+ (date.getMonth() + 1)).slice(-2);
+        var day = ('0' + date.getDate()).slice(-2);
+        var time = year +'-'+ month +'-'+ day;
+        document.getElementById('exp').value = time;
+        // 限制日期（加上min）
+        document.getElementById('exp').setAttribute('min', time);
+
+        // 更新今日日期（如果換日了）
+        function displayNow() {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = ('0'+ (date.getMonth() + 1)).slice(-2);
+            var day = ('0' + date.getDate()).slice(-2);
+            var time = year +'-'+ month +'-'+ day;
+            // 限制日期（加上min）
+            document.getElementById('exp').setAttribute('min', time);
+        }
+    </script>
+</body>
+</html>
